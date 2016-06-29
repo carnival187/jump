@@ -15,13 +15,17 @@ let jump = {
 	timer : null,
 	top : 10,
 	start : 0,
-	speed : 50,
-	up : true,//ou state en str pour deinir l'etat (pour pouvoir ajouter au sol)
+	speed : 20,
+	state : 'floor',
 
 	init : function(){
 		document.addEventListener('keydown', function(){
-			jump.start = Date.now();
-			jump.jumping();
+			if(jump.state === 'floor')
+			{
+				jump.start = Date.now();
+				jump.state = 'up';
+				jump.jumping();
+			}
 		});
 		document.addEventListener('keyup', function(){
 			r = Math.round((Date.now() - jump.start) / 20 - 1);
@@ -31,21 +35,23 @@ let jump = {
 	},
 
 	jumping : function(){
-		if(jump.up){
+		if(jump.state === 'up'){
 			if(p.y >= jump.top)
 			{
-				jump.up = false;
+				jump.state = 'down';
 			}
 			else{
 				p.y++;
+				jump.speed += 5;
 			}
 			//return;
 		}
 		else if(p.y > 0) {
 			p.y--;
+			jump.speed -= 5;
 		}
 		else{
-			jump.up = true;
+			jump.state = 'floor';
 			return;
 		}
 		jump.timer = setTimeout(jump.jumping, jump.speed);
