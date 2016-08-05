@@ -1,8 +1,5 @@
-/**
- * des constantes :
- * const JUMP_SIZE = 10;
- * une class pour chaque perso
- */
+const JUMP_SIZE = 10;
+const MAX_JUMP_KEY_DOWN = 300;
 let makeMat = function(x, y, value = 0){
 	let mat = [];
 	for(let i = 0; i < x; i++){
@@ -43,13 +40,12 @@ let g = {
 	},
 	p : {
 		x: 6,
-		y: 1,
+		y: 6,
 		state : "floor",
-		jumpMax: 10,
-		jumpTop: 10,
-		jumpSpeed: 100,
+		jumpTop: JUMP_SIZE,
+		jumpSpeed: 50,
 		speed : {
-			jump : 100,
+			jump : 50,
 			move: 50
 		},
 		timers : {
@@ -82,51 +78,45 @@ let g = {
 
 	jump(){
 		if(this.p.is.onFloor(this) ){
-			console.log("jump");
 			this.p.is.jumping = true;
 			this.p.jumpStart = Date.now();
-			this.p.jumpMax = this.p.y + 10;
+			this.p.jumpTop = this.p.y + JUMP_SIZE;
 			this.jumping(this);
 		}
 	},
-	falling(that){
-		if(!that.p.is.onFloor(that) && !that.p.is.jumping) {
-			console.log("falling");
-			that.p.y--;
-			that.p.jumpSpeed -= 2;
-			setTimeout(that.falling, that.p.jumpSpeed, that);
-		}
-		else{
-			that.p.jumpTop = that.p.y + 10;
-		}
-		that.draw();
-	},
 	jumping(that){
 		if(that.p.is.jumping){
-			console.log(that.p.jumpTop);
 			if(that.p.y < that.p.jumpTop)
 			{
-				console.log("jumping");
 				that.p.y++;
 				that.p.jumpSpeed += 2;//ralenti (+ 5ms)
 				setTimeout(that.jumping, that.p.jumpSpeed, that);
 			}
 			else{
 				that.p.is.jumping = false;
+				that.p.jumpTop = that.p.y + JUMP_SIZE;
 				that.falling(that);
 			}
 			//return;
 		}
 		that.draw();
 	},
-	leftEnd(){},
-	rightEnd(){},
 	jumpEnd(){
-//~~		if(this.p.is.jumping){
-//~~			let t = Date.now() - this.p.timers["jump"];
-//~~			this.p.jumpTop = this.p.jumpMax / 500 * t; //mouai jsuis pas sur ici
-//~~		}
+		if(this.p.is.jumping){
+			let t = Date.now() - this.p.timers["jump"];
+			this.p.jumpTop = JUMP_SIZE / MAX_JUMP_KEY_DOWN * t; //mouai jsuis pas sur ici
+		}
 	},
+	falling(that){
+		if(!that.p.is.onFloor(that) && !that.p.is.jumping) {
+			that.p.y--;
+			that.p.jumpSpeed -= 2;
+			setTimeout(that.falling, that.p.jumpSpeed, that);
+		}
+		that.draw();
+	},
+	leftEnd(){this.p.is.walking = false;},
+	rightEnd(){},
 	left(){
 		if(this.p.x > 0){
 			this.p.x--;
