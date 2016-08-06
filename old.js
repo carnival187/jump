@@ -5,7 +5,7 @@ let makeMat = function(x, y, value = 0){
 	for(let i = 0; i < x; i++){
 		mat[i] = [];
 		for(let j = 0; j < y; j++){
-			if(i == 0 || j == 0 || i == x-1 || j == y-1 || j%5 == 0 && i < x/5){
+			if(i == 0 || j == 0 || i == x-1 || j == y-1 || j%15 == 0 && i < x/5){
 				mat[i][j] = 1;
 			}else{
 				mat[i][j] = value;
@@ -41,22 +41,21 @@ let g = {
 	p : {
 		x: 6,
 		y: 6,
-		state : "floor",
 		jumpTop: JUMP_SIZE,
 		jumpSpeed: 50,
 		speed : {
 			jump : 50,
-			move: 50
+			side: 50
 		},
 		timers : {
 			jump : null,
-			side: null
+			left: null
 		},
 		is: {//is.doing
 			jumping: false,
 			lefting: false,
 			righting: false,
-			falling: true,
+			falling: false,
 			onFloor(that){
 				return (that.map[ that.p.y -1 ][ that.p.x ] !== 0);
 			}
@@ -112,20 +111,48 @@ let g = {
 			that.p.y--;
 			that.p.jumpSpeed -= 2;
 			setTimeout(that.falling, that.p.jumpSpeed, that);
+			that.draw();
 		}
-		that.draw();
 	},
-	leftEnd(){this.p.is.walking = false;},
-	rightEnd(){},
 	left(){
-		if(this.p.x > 0){
-			this.p.x--;
-			this.falling(this);
+		if(!this.p.is.lefting){
+			this.p.is.lefting = true;
+			this.lefting(this); 
 		}
+	},
+	lefting(that){
+		if(that.map[ that.p.y ][ that.p.x -1] === 0){
+			that.p.x--;
+			that.draw();
+			if(!that.p.is.falling){
+				that.falling(that);
+			}
+			that.p.timers.left = setTimeout(that.lefting, that.p.speed.side, that);
+		}
+	},
+	leftEnd(){
+		this.p.is.lefting = false;
+		clearTimeout(this.p.timers.left);
 	},
 	right(){
-		this.p.x++;
-		this.falling(this);
+		if(!this.p.is.righting){
+			this.p.is.righting = true;
+			this.righting(this); 
+		}
+	},
+	righting(that){
+		if(that.map[ that.p.y ][ that.p.x +1] === 0){
+			that.p.x++;
+			that.draw();
+			if(!that.p.is.falling){
+				that.falling(that);
+			}
+			that.p.timers.right = setTimeout(that.righting, that.p.speed.side, that);
+		}
+	},
+	rightEnd(){
+		this.p.is.righting = false;
+		clearTimeout(this.p.timers.right);
 	},
 	draw(){
 		this.screen.draw(this);
@@ -161,4 +188,3 @@ let g = {
 	}
 };
 g.init();
-console.log(g);
