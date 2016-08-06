@@ -10,7 +10,27 @@
 				border: solid 2px black;
 			}
 		</style>
+	<script>
+let makeMat = function(x, y, value = 0){
+	let mat = [];
+	for(let i = 0; i < x; i++){
+		mat[i] = [];
+		for(let j = 0; j < y; j++){
+			if( j == 0 || i == x-1 || j == y-1 || j%15 == 0 && i < x/5){
+				mat[i][j] = 1;
+			}else{
+				mat[i][j] = value;
+			}
+		}
+	}
+	return mat;
+};
+	</script>
 	<script src="Player.js"></script>
+	<script src="const.js"></script>
 	<script src="old.js"></script>
+	<script>
+g.init();
+	</script>
 	</body>
 </html>
