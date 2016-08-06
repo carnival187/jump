@@ -1,7 +1,7 @@
 let g = {
 	colors : ["white", "green","red","blue","orange"],
-	keys : [],
-	map : makeMat(40, 200),
+	keys: [],//obliger de le declarer
+	map : MAP.make(40, 200),
 
 	screen : {
 		width: 50,
@@ -24,7 +24,7 @@ let g = {
 	},
 	p : {
 		x: 6,
-		y: 6,
+		y: 1,
 		body : bodys.square,
 		jumpTop: JUMP_SIZE,
 		speed : {
@@ -52,22 +52,57 @@ let g = {
 			});
 		}
 	},
-	clear(o, d){// l'objet concerner (un objet solid) et la direction au format {x,y}
-		o.body.forEach((v, k)=>{
-			if(o.y + v.y
-			if(this.map[ o.y + v.y + d.y ][ o.x + v.x + d.x ] !== 0){
-				return false;
+	clear(o, d){// l'objet concerner (un objet Solid...) et la direction au format {x,y}
+		let r = true;
+		//utiliser array.every plutot que foreach (pour pouvoir arreter la boucle)
+		o.body.forEach((v)=>{
+			let y =  o.y + v.y + d.y;
+			let x =  o.x + v.x + d.x;
+			if(y < 0 || x < 0 || this.map[y][x] !== 0){
+				r = false;
 			}
 		});
-		return true;
+		return r;
 	},
 	jump(){
-		if(!this.p.is.jumping && !this.clear(this.p, direction.down) ){
+		if(!this.p.is.jumping && !this.p.is.falling){
 			this.p.is.jumping = true;
 			this.p.jumpStart = Date.now();
 			this.p.jumpTop = this.p.y + JUMP_SIZE;
 			this.jumping(this);
 		}
+	},
+	left(){
+		if(!this.p.is.lefting && !this.p.is.righting){
+			this.p.is.lefting = true;
+			this.lefting(this); 
+		}
+	},
+	right(){
+		if(!this.p.is.lefting && !this.p.is.righting){
+			this.p.is.righting = true;
+			this.righting(this); 
+		}
+	},
+	lefting(that){
+		if(that.clear(that.p, direction.left)){
+			that.p.x--;
+			that.draw();
+			if(!that.p.is.falling && !that.p.is.jumping && that.clear(that.p, direction.down)){
+				that.falling(that);
+			}
+		}
+		that.p.timers.left = setTimeout(that.lefting, that.p.speed.side, that);
+	},
+	righting(that){
+		if(that.clear(that.p, direction.right) ){
+			that.p.x++;
+			that.draw();
+			if(!that.p.is.falling && !that.p.is.jumping && that.clear(that.p, direction.down)){
+				that.falling(that);
+			}
+		}
+		that.p.timers.right = setTimeout(that.righting, that.p.speed.side, that);
 	},
 	jumping(that){
 		if(that.p.is.jumping){
@@ -87,6 +122,14 @@ let g = {
 		}
 		that.draw();
 	},
+	leftEnd(){
+		this.p.is.lefting = false;
+		clearTimeout(this.p.timers.left);
+	},
+	rightEnd(){
+		this.p.is.righting = false;
+		clearTimeout(this.p.timers.right);
+	},
 	jumpEnd(){
 //~~		if(this.p.is.jumping){
 //~~			let t = Date.now() - this.p.timers["jump"];
@@ -104,48 +147,7 @@ let g = {
 			that.draw();
 		}
 	},
-	left(){
-		if(!this.p.is.lefting && !this.p.is.righting){
-			this.p.is.lefting = true;
-			this.lefting(this); 
-		}
-	},
-	lefting(that){
-		if(that.clear(that.p, direction.left)){
-		console.log("lefting");
-			console.log('lefting');
-			that.p.x--;
-			that.draw();
-			if(!that.p.is.falling && !that.p.is.jumping && that.clear(that.p, direction.down)){
-				that.falling(that);
-			}
-		}
-		that.p.timers.left = setTimeout(that.lefting, that.p.speed.side, that);
-	},
-	leftEnd(){
-		this.p.is.lefting = false;
-		clearTimeout(this.p.timers.left);
-	},
-	right(){
-		if(!this.p.is.lefting && !this.p.is.righting){
-			this.p.is.righting = true;
-			this.righting(this); 
-		}
-	},
-	righting(that){
-		if(that.clear(that.p, direction.right) ){
-			that.p.x++;
-			that.draw();
-			if(!that.p.is.falling && !that.p.is.jumping && that.clear(that.p, direction.down)){
-				that.falling(that);
-			}
-		}
-		that.p.timers.right = setTimeout(that.righting, that.p.speed.side, that);
-	},
-	rightEnd(){
-		this.p.is.righting = false;
-		clearTimeout(this.p.timers.right);
-	},
+
 	draw(){
 		this.screen.draw(this);
 		this.p.draw(this);
