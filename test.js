@@ -71,22 +71,32 @@ let g = {
 		o.y += d.y;
 		this.draw();
 	},
+	side(strDirection){
+		
+	},
+	siding(strDirection){
+		let directing = strDirection + "ing";
+		if(this.p.is[directing]){
+			this.move(this.p, direction[strDirection]);
+		}
+	},
 	jump(){
 		if(!this.p.is.jumping && !this.p.is.falling){
 			this.p.is.jumping = true;
-			this.p.jumpStart = Date.now();
 			this.p.jumpSize = JUMP_SIZE;
 			this.jumping(this);
 		}
 	},
 	left(){
-		if(!this.p.is.lefting && !this.p.is.righting){
+		if(!this.p.is.lefting){
+			this.p.is.righting = false;
 			this.p.is.lefting = true;
 			this.lefting(this); 
 		}
 	},
 	right(){
-		if(!this.p.is.lefting && !this.p.is.righting){
+		if(!this.p.is.righting){
+			this.p.is.lefting = false;
 			this.p.is.righting = true;
 			this.righting(this); 
 		}

@@ -1,17 +1,27 @@
 //MAP ??????????????????????????
-const JUMP_SIZE = 10;
+const JUMP_SIZE = 20;
 const MAX_JUMP_KEY_DOWN = 300;
+const SPEED_TIMEOUT = 50;
 const direction = {
 	up: {x: 0, y: 1},
 	down: {x: 0, y: -1},
-	left: {x: -1, y: 0},
-	right: {x: 1, y: 0}
+	left: {x: -4, y: 0},
+	right: {x: 4, y: 0}
 
 };
 const bodys = {
 
-	square: [{x:0,y:0},{x:1,y:0},{x:0,y:1},{x:1,y:1}]
-
+	square: [{x:0,y:0},{x:1,y:0},{x:0,y:1},{x:1,y:1}],
+	
+	makeSquare(a){
+		let r = [];
+		for(let i = 0; i < a; i++){
+			for(let j = 0; j < a; j++){
+				r.push({y: i, x: j});
+			}
+		}
+		return r;
+	}
 
 };
 let MAP = {
@@ -19,9 +29,9 @@ let MAP = {
 		let mat = new Array(a);
 		for(let i = 0, l = 0; i < a; i++){
 			mat[i] = [];
-			l += ( i % 5 === 0) ? 1 : 0;
+			l += ( i % 15 === 0) ? 1 : 0;
 			for(let j = 0; j < b; j++){
-				if(j > l * 15){
+				if(j > l * 100){
 					mat[i][j] = 1;
 				}else{
 					mat[i][j] = 0;
