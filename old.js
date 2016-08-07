@@ -1,7 +1,7 @@
 let g = {
 	colors : ["white", "green","red","blue","orange"],
 	keys: [],//obliger de le declarer
-	map : MAP.make2(40, 120),
+	map : MAP.make2(60, 120),
 
 	screen : {
 		x: null,
@@ -11,36 +11,24 @@ let g = {
 		canvas : document.createElement('canvas'),
 
 		draw(that){
-			this.x = ( that.p.x - 14 > 0) ? that.p.x - 14 : 0;
+			this.x = ( that.p.x - this.width / 2 > 0) ? Math.trunc(that.p.x - this.width / 2) : 0;
 			this.x = ( this.x > that.map[0].length - this.width) ? that.map[0].length - this.width : this.x;
+			this.y = ( that.p.y - this.height / 3 > 0) ? Math.trunc(that.p.y - this.height / 3) : 0;
+			this.y = ( this.y > that.map.length - this.height) ? that.map.length - this.height : this.y;
 			for(let i = 0, l = this.y; i < this.height; i++, l++){
 				for(let j = 0, k = this.x; j < this.width; j++, k++){
 					let x = j * this.rect_width;
 					let y =  i * this.rect_height;
-					that.ctx.fillStyle = that.colors[that.map[i][k]];
+					that.ctx.fillStyle = that.colors[that.map[l][k]];
 					that.ctx.fillRect(x, y, this.rect_width, this.rect_height);
 				}
 			}
 		},
-		old(that){
-			let a = that.p.x;
-			let b = ( (a - 14) > 0) ? a : 0;
-			for(let i = 0, l = this.y; i < this.height; i++, l++){
-				for(let j = 0, k = b; j < this.width; j++, k++){
-					let x = j * this.rect_width;
-					//let y = (this.height - 1 - i) * this.rect_height;
-					let y =  i * this.rect_height;
-					that.ctx.fillStyle = that.colors[that.map[i][k]];
-					that.ctx.fillRect(x, y, this.rect_width, this.rect_height);
-				}
-			}
-		}
 	},
 	p : {
-		x: 6,
+		x: 5,
 		y: 1,
 		body : bodys.square,
-		jumpTop: JUMP_SIZE,
 		speed : {
 			jump : 30,
 			fall : 30,
@@ -79,7 +67,7 @@ let g = {
 		if(!this.p.is.jumping && !this.p.is.falling){
 			this.p.is.jumping = true;
 			this.p.jumpStart = Date.now();
-			this.p.jumpTop = this.p.y + JUMP_SIZE;
+			this.p.jumpSize = JUMP_SIZE;
 			this.jumping(this);
 		}
 	},
@@ -116,9 +104,10 @@ let g = {
 		that.p.timers.right = setTimeout(that.righting, that.p.speed.side, that);
 	},
 	jumping(that){
-		if(that.p.y < that.p.jumpTop)
+		if(that.p.jumpSize > 0)
 		{
-			if(that.clear(that.p, direction.up){
+			that.p.jumpSize--;
+			if(that.clear(that.p, direction.up)){
 				that.p.y++;
 			}
 			setTimeout(that.jumping, that.p.speed.jump, that);
@@ -126,7 +115,6 @@ let g = {
 		else{
 			that.p.is.jumping = false;
 			that.p.is.falling = true;
-			that.p.jumpTop = that.p.y + JUMP_SIZE;
 			that.falling(that);
 		}
 		that.draw();
@@ -139,12 +127,7 @@ let g = {
 		this.p.is.righting = false;
 		clearTimeout(this.p.timers.right);
 	},
-	jumpEnd(){
-//~~		if(this.p.is.jumping){
-//~~			let t = Date.now() - this.p.timers["jump"];
-//~~			this.p.jumpTop = JUMP_SIZE / MAX_JUMP_KEY_DOWN * t; //mouai jsuis pas sur ici
-//~~		}
-	},
+	jumpEnd(){},
 	falling(that){
 		if(!that.clear(that.p, direction.down) || that.p.is.jumping) {
 			that.p.is.falling = false;
