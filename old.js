@@ -1,14 +1,28 @@
 let g = {
 	colors : ["white", "green","red","blue","orange"],
 	keys: [],//obliger de le declarer
-	map : MAP.make(40, 200),
+	map : MAP.make2(40, 120),
 
 	screen : {
-		width: 50,
+		x: null,
+		y: null,
+		width: 60,
 		height: 30,
 		canvas : document.createElement('canvas'),
 
 		draw(that){
+			this.x = ( that.p.x - 14 > 0) ? that.p.x - 14 : 0;
+			this.x = ( this.x > that.map[0].length - this.width) ? that.map[0].length - this.width : this.x;
+			for(let i = 0, l = this.y; i < this.height; i++, l++){
+				for(let j = 0, k = this.x; j < this.width; j++, k++){
+					let x = j * this.rect_width;
+					let y =  i * this.rect_height;
+					that.ctx.fillStyle = that.colors[that.map[i][k]];
+					that.ctx.fillRect(x, y, this.rect_width, this.rect_height);
+				}
+			}
+		},
+		old(that){
 			let a = that.p.x;
 			let b = ( (a - 14) > 0) ? a : 0;
 			for(let i = 0, l = this.y; i < this.height; i++, l++){
@@ -40,15 +54,12 @@ let g = {
 			falling: false,
 		},
 		draw(that){
-//faut aussi gerer la hauteur et la fin (en longueur et hauteur)
-			let h = that.screen.rect_height;
-			let w = that.screen.rect_width;
-
 			that.ctx.fillStyle = that.colors[2];
-			let X = this.x > 15 ? 15 : this.x;
-			let Y = this.y;
+			let X = this.x - that.screen.x;
+			let Y = this.y - that.screen.y;
 			this.body.forEach( v =>{
-				that.ctx.fillRect((X + v.x) * w, (Y + v.y) * h, w, h);
+				that.ctx.fillRect((X + v.x) * that.screen.rect_width, (Y + v.y) * that.screen.rect_height,
+						that.screen.rect_width, that.screen.rect_height);
 			});
 		}
 	},
@@ -105,20 +116,18 @@ let g = {
 		that.p.timers.right = setTimeout(that.righting, that.p.speed.side, that);
 	},
 	jumping(that){
-		if(that.p.is.jumping){
-			if(that.p.y < that.p.jumpTop)
-			{
+		if(that.p.y < that.p.jumpTop)
+		{
+			if(that.clear(that.p, direction.up){
 				that.p.y++;
-				//that.p.jumpSpeed += 2;//ralenti (+ 5ms)
-				setTimeout(that.jumping, that.p.speed.jump, that);
 			}
-			else{
-				that.p.is.jumping = false;
-				that.p.is.falling = true;
-				that.p.jumpTop = that.p.y + JUMP_SIZE;
-				that.falling(that);
-			}
-			//return;
+			setTimeout(that.jumping, that.p.speed.jump, that);
+		}
+		else{
+			that.p.is.jumping = false;
+			that.p.is.falling = true;
+			that.p.jumpTop = that.p.y + JUMP_SIZE;
+			that.falling(that);
 		}
 		that.draw();
 	},

@@ -15,18 +15,38 @@ const bodys = {
 
 };
 let MAP = {
-	make(y,x,v = 0){
-		let mat = new Array(y);
-		for(let i = 0, l = 0; i < y; i++){
+	make2(a,b){
+		let mat = new Array(a);
+		for(let i = 0, l = 0; i < a; i++){
 			mat[i] = [];
-			for(let j = 0; j < x; j++){
-				if( i === 0 || j == 0 || i == x-1 || j == y-1){
+			l += ( i % 5 === 0) ? 1 : 0;
+			for(let j = 0; j < b; j++){
+				if(j > l * 15){
 					mat[i][j] = 1;
 				}else{
-					mat[i][j] = v;
+					mat[i][j] = 0;
 				}
 			}
 		}
 		return mat;
+	},
+	make(a,b){
+		let mat = new Array(a);
+		for(let i = 0, l = 0; i < a; i++){
+			mat[i] = [];
+			for(let j = 0; j < b; j++){
+				if( i === 0 || j == 0 || i == a-1 || j == b-1 || j % 15 === 0){
+					mat[i][j] = 1;
+				}else{
+					mat[i][j] = 0;
+				}
+			}
+		}
+		return mat;
+	},
+	
+	test : {//marche pas....
+		x: [],
+		y: []
 	}
 };
