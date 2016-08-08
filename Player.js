@@ -18,23 +18,48 @@ class Player{
 					screen.rect_width, screen.rect_height);
 		});
 	}
-	oldClear(d){
+	clear(d){
 		return this.body.every( (v)=>{
 			const Y =  this.y + v.y + d.y;
 			const X =  this.x + v.x + d.x;
 			return !(Y < 0 || X < 0 || MAP[Y][X] !== 0);
 		});
 	}
-	clear(d){
-		return this.body.forEach( (v)=>{
-			for(let i = 0; i <= v.x
-
-
-
-			const Y =  this.y + v.y + d.y;
-			const X =  this.x + v.x + d.x;
-			return !(Y < 0 || X < 0 || MAP[Y][X] !== 0);
-		});
+	vertical(y){
+		if(y !== 0){
+			let t = [];
+			this.body.forEach( v, k =>{
+				t[k] = 0;
+				for(let i = 1; i <= Math.abs(y); i++){
+					if(MAP[this.y + i][this.x] === 0){
+						t[k] += Math.sign(y);
+					}
+					else{
+						break;
+					}
+				}
+			}, this);
+			return Math.min(...t);
+		}
+		return 0;
+	}
+	horizontal(x){
+		if(x !== 0){
+			let t = [];
+			this.body.forEach( v, k =>{
+				t[k] = 0;
+				for(let i = 1; i <= Math.abs(x); i++){
+					if(MAP[this.y][this.x + i] === 0){
+						t[k] += Math.sign(x);
+					}
+					else{
+						break;
+					}
+				}
+			}, this);
+			return Math.min(...t);
+		}
+		return 0;
 	}
 	move(d){
 		this.x += d.x;
