@@ -30,15 +30,6 @@ class Player{
 		this.y += d.y;
 		this.g.draw();
 	}
-//~~	side(strDirection){
-//~~		
-//~~	}
-//~~	siding(strDirection){
-//~~		let directing = strDirection + "ing";
-//~~		if(this.is[directing]){
-//~~			this.move(this, direction[strDirection]);
-//~~		}
-//~~	}
 	jump(){
 		if(!this.is.jumping && !this.is.falling){
 			this.is.jumping = true;
@@ -104,8 +95,14 @@ class Player{
 		clearTimeout(this.timers.right);
 	}
 	jumpEnd(){}
+	fall(){
+		if(!this.is.jumping) {
+			this.is.falling = true;
+			this.falling(this);
+		}
+	}
 	falling(me){
-		if(!me.clear(direction.down) || me.is.jumping) {
+		if(me.is.jumping || !me.clear(direction.down)) {
 			me.is.falling = false;
 		}
 		else{

@@ -33,7 +33,6 @@ let g = {
 		//this.p.push(new Player(5, 1, 10, ref);
 		this.p = new Player(5, 1, 10, ref);
 	},
-
 	draw(){
 		this.screen.draw(this);
 		this.p.draw();
@@ -49,8 +48,6 @@ let g = {
 		document.addEventListener('keydown', (e)=>{
 			if(this.keys[e.keyCode]){
 				e.preventDefault();
-				//this.p.times[ this.keys[e.keyCode] ] = Date.now();
-				//this[ this.keys[e.keyCode] ]();
 				this.p[ this.keys[e.keyCode] ]();
 			}
 		});
@@ -59,7 +56,6 @@ let g = {
 				e.preventDefault();
 				let action = this.keys[e.keyCode] + "End"; 
 				this.p[ action ]();
-				this.draw();
 			}
 		});
 		this.screen.rect_width = parseInt(this.screen.canvas.width) / this.screen.width;
