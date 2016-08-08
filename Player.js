@@ -18,8 +18,19 @@ class Player{
 					screen.rect_width, screen.rect_height);
 		});
 	}
-	clear(d){
+	oldClear(d){
 		return this.body.every( (v)=>{
+			const Y =  this.y + v.y + d.y;
+			const X =  this.x + v.x + d.x;
+			return !(Y < 0 || X < 0 || MAP[Y][X] !== 0);
+		});
+	}
+	clear(d){
+		return this.body.forEach( (v)=>{
+			for(let i = 0; i <= v.x
+
+
+
 			const Y =  this.y + v.y + d.y;
 			const X =  this.x + v.x + d.x;
 			return !(Y < 0 || X < 0 || MAP[Y][X] !== 0);
@@ -30,6 +41,7 @@ class Player{
 		this.y += d.y;
 		this.g.draw();
 	}
+
 	jump(){
 		if(!this.is.jumping && !this.is.falling){
 			this.is.jumping = true;
@@ -38,36 +50,43 @@ class Player{
 		}
 	}
 	left(){
-		if(!this.is.lefting){
-			this.is.righting = false;
+		if(!this.is.lefting && !this.is.righting){
 			this.is.lefting = true;
 			this.lefting(this); 
 		}
 	}
 	right(){
-		if(!this.is.righting){
-			this.is.lefting = false;
+		if(!this.is.lefting && !this.is.righting){
 			this.is.righting = true;
 			this.righting(this); 
+		}
+	}
+	fall(){
+		if(!this.is.jumping && !this.is.falling) {
+			this.is.falling = true;
+			this.falling(this);
+		}
+	}
+	falling(me){
+		if(me.clear(direction.down)) {
+			me.move(direction.down);
+			setTimeout(me.falling, TIMEOUT, me);
+		}
+		else{
+			me.is.falling = false;
 		}
 	}
 	lefting(me){
 		if(me.clear(direction.left)){
 			me.move(direction.left);
-			if(!me.is.falling && !me.is.jumping && me.clear(direction.down)){
-				me.is.falling = true;//j'm bin sans aussi
-				me.falling(me);
-			}
+			me.fall();
 		}
 		me.timers.left = setTimeout(me.lefting, TIMEOUT, me);
 	}
 	righting(me){
 		if(me.clear(direction.right) ){
 			me.move(direction.right);
-			if(!me.is.falling && !me.is.jumping && me.clear(direction.down)){
-				me.is.falling = true;//j'm bin sans aussi
-				me.falling(me);
-			}
+			me.fall();
 		}
 		me.timers.right = setTimeout(me.righting, TIMEOUT, me);
 	}
@@ -95,19 +114,4 @@ class Player{
 		clearTimeout(this.timers.right);
 	}
 	jumpEnd(){}
-	fall(){
-		if(!this.is.jumping) {
-			this.is.falling = true;
-			this.falling(this);
-		}
-	}
-	falling(me){
-		if(me.is.jumping || !me.clear(direction.down)) {
-			me.is.falling = false;
-		}
-		else{
-			me.move(direction.down);
-			setTimeout(me.falling, TIMEOUT, me);
-		}
-	}
 }
