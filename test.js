@@ -2,6 +2,7 @@ let g = {
 	colors : ["white", "green","red","blue","orange"],
 	keys: [],//obliger de le declarer
 	map : MAP.make2(100, 200),
+	p : new Player(5,1,10),
 
 	screen : {
 		x: null,
@@ -25,46 +26,12 @@ let g = {
 			}
 		},
 	},
-	p : {
-		x: 5,
-		y: 1,
-		body : bodys.makeSquare(10),
-		speed : {
-			jump : 30,
-			fall : 30,
-			side: 60
-		},
-		timers : {},
-		is: {//is.doing
-			jumping: false,
-			lefting: false,
-			righting: false,
-			falling: false,
-		},
-		move(d){
-			this.x += d.x;
-			this.y += d.y;
-		},
-		draw(that){
-			that.ctx.fillStyle = that.colors[2];
-			let X = this.x - that.screen.x;
-			let Y = this.y - that.screen.y;
-			this.body.forEach( v =>{
-				that.ctx.fillRect((X + v.x) * that.screen.rect_width, (Y + v.y) * that.screen.rect_height,
-						that.screen.rect_width, that.screen.rect_height);
-			});
-		}
-	},
 	clear(o, d){
-		let r = true;
-		o.body.forEach((v)=>{
-			let y =  o.y + v.y + d.y;
-			let x =  o.x + v.x + d.x;
-			if(y < 0 || x < 0 || this.map[y][x] !== 0){
-				r = false;
-			}
+		return o.body.every( (v)=>{
+			const y =  o.y + v.y + d.y;
+			const x =  o.x + v.x + d.x;
+			return !(y < 0 || x < 0 || this.map[y][x] !== 0);
 		});
-		return r;
 	},
 	move(o, d){
 		o.x += d.x;
