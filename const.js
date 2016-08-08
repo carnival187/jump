@@ -24,7 +24,7 @@ const bodys = {
 	}
 
 };
-let MAP = {
+let M = {
 	make2(a,b){
 		let mat = new Array(a);
 		for(let i = 0, l = 0; i < a; i++){
@@ -60,3 +60,4 @@ let MAP = {
 		y: []
 	}
 };
+const MAP = M.make2(100, 200);
