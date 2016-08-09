@@ -22,7 +22,7 @@ class Player{
 		return this.body.every( (v)=>{
 			const Y =  this.y + v.y + d.y;
 			const X =  this.x + v.x + d.x;
-			return !(Y < 0 || X < 0 || MAP[Y][X] !== 0);
+			return !(Y < 0 || X < 0 || this.that.map.body[Y][X] !== 0);
 		});
 	}
 	vertical(y){
@@ -32,7 +32,7 @@ class Player{
 			for(let v of this.body){
 				let k = 0;
 				for(let i = u; i !== y; i += u){
-					if(Array.isArray(MAP[this.y + v.y + i]) && MAP[this.y + v.y + i][this.x + v.x] === 0){
+					if(Array.isArray(this.g.map.body[this.y + v.y + i]) && this.g.map.body[this.y + v.y + i][this.x + v.x] === 0){
 						k += u;
 					}
 					else{
@@ -54,7 +54,7 @@ class Player{
 			for(let v of this.body){
 				let k = 0;
 				for(let i = u; i !== x; i += u){
-					if(Array.isArray(MAP[this.y + v.y]) && MAP[this.y + v.y][this.x + v.x + i] === 0){
+					if(Array.isArray(this.g.map.body[this.y + v.y]) && this.g.map.body[this.y + v.y][this.x + v.x + i] === 0){
 						k += u;
 					}
 					else{

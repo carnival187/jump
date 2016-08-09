@@ -2,6 +2,7 @@ let g = {
 	keys: [],//obliger de le declarer
 //~~	p: [],
 	p: {},
+	map: new Map(),
 
 	screen : {
 		x: null,
@@ -14,14 +15,14 @@ let g = {
 
 		draw(that){
 			this.x = ( that.p.x - this.width / 2 > 0) ? Math.trunc(that.p.x - this.width / 2) : 0;
-			this.x = ( this.x > MAP[0].length - this.width) ? MAP[0].length - this.width : this.x;
+			this.x = ( this.x > that.map.body[0].length - this.width) ? that.map.body[0].length - this.width : this.x;
 			this.y = ( that.p.y - this.height / 3 > 0) ? Math.trunc(that.p.y - this.height / 3) : 0;
-			this.y = ( this.y > MAP.length - this.height) ? MAP.length - this.height : this.y;
+			this.y = ( this.y > that.map.body.length - this.height) ? that.map.body.length - this.height : this.y;
 			for(let i = 0, l = this.y; i < this.height; i++, l++){
 				for(let j = 0, k = this.x; j < this.width; j++, k++){
 					let x = j * this.rect_width;
 					let y =  i * this.rect_height;
-					this.ctx.fillStyle = this.colors[MAP[l][k]];
+					this.ctx.fillStyle = this.colors[that.map.body[l][k]];
 					this.ctx.strokeStyle = "gray";
 					this.ctx.strokeRect(x, y, this.rect_width, this.rect_height);
 					this.ctx.fillRect(x, y, this.rect_width, this.rect_height);
@@ -33,6 +34,7 @@ let g = {
 	addPlayer(){
 		let ref = this;
 		//this.p.push(new Player(5, 1, 10, ref);
+		//this.p.push(new Player(id du player...........);
 		this.p = new Player(1,1, 5, ref);
 	},
 	draw(){
