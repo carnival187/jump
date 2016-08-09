@@ -9,10 +9,10 @@ const SPEED = {
 	right: this.side
 };
 let direction = {//minimum 2 sinon equivalent a 0
-	up: {x: 0, y: 3},
-	down: {x: 0, y: -3},
-	left: {x: -3, y: 0},
-	right: {x: 3, y: 0}
+	up: {x: 0, y: 6},
+	down: {x: 0, y: -6},
+	left: {x: -6, y: 0},
+	right: {x: 6, y: 0}
 
 };
 const bodys = {
@@ -30,36 +30,3 @@ const bodys = {
 	}
 
 };
-let M = {
-	make2(a,b){
-		let mat = new Array(a);
-		for(let i = 0, l = 0; i < a; i++){
-			mat[i] = [];
-			l += ( i % 15 === 0) ? 1 : 0;
-			for(let j = 0; j < b; j++){
-				if(j > l * 100){
-					mat[i][j] = 1;
-				}else{
-					mat[i][j] = 0;
-				}
-			}
-		}
-		return mat;
-	},
-	make(a, b, c = 10){
-		let mat = new Array(a);
-		for(let i = 0, l = 0; i < a; i++){
-			mat[i] = [];
-			for(let j = 0; j < b; j++){
-				if( i === 0 || j == 0 || i == a-1 || j == b-1 || j % c === 0 && i < 10){
-				//if( j % c === 0 && j !== 0){
-					mat[i][j] = 1;
-				}else{
-					mat[i][j] = 0;
-				}
-			}
-		}
-		return mat;
-	},
-};
-const MAP = M.make(300, 600);

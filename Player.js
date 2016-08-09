@@ -1,22 +1,23 @@
 class Player{
-	constructor(x, y, size, that){
-		this.x = x;
-		this.y = y;
-		this.body = bodys.makeSquare(size);
+	constructor(that){
+		this.x = 1;
+		this.y = 1;
+		this.size = 10;
+		this.body = bodys.makeSquare(this.size);
 		this.is = {};
 		this.speed = {};
 		this.timers = {};
 		this.g = that;
+		this.state = null; //ondessine en fct de l'etat
+		//un objet pour les valeurs nécéssaires au dessin
 	}
 	draw(){
 		let screen = this.g.screen;
 		screen.ctx.fillStyle = screen.colors[2];
 		const X = this.x - screen.x;
-		const Y = this.y - screen.y;
-		this.body.forEach( v =>{
-			screen.ctx.fillRect((X + v.x) * screen.rect_width, (Y + v.y) * screen.rect_height,
-					screen.rect_width, screen.rect_height);
-		});
+		const Y = screen.height - (this.y - screen.y);
+		screen.ctx.fillRect(X * screen.rect_width, Y * screen.rect_height - this.size * screen.rect_height,
+					screen.rect_width * this.size, screen.rect_height * this.size);
 	}
 	clear(d){
 		return this.body.every( (v)=>{

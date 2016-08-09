@@ -28,12 +28,12 @@ class Map{
 		}
 		return mat;
 	}
-	make(a, b, c = 10){
+	make(a, b, c = 50, d = 10){
 		let mat = new Array(a);
 		for(let i = 0, l = 0; i < a; i++){
 			mat[i] = [];
 			for(let j = 0; j < b; j++){
-				if( i === 0 || j == 0 || i == a-1 || j == b-1 || j % c === 0 && i < 10){
+				if( i === 0 || j == 0 || i == a-1 || j == b-1 || j % c === 0 && i < d){
 				//if( j % c === 0 && j !== 0){
 					mat[i][j] = 1;
 				}else{
