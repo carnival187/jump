@@ -6,8 +6,8 @@ let g = {
 	screen : {
 		x: null,
 		y: null,
-		width: 100,
-		height: 50,
+		width: 50,
+		height: 30,
 		canvas : document.createElement('canvas'),
 		ctx: {},
 		colors : ["white", "green","red","blue","orange"],
@@ -22,6 +22,8 @@ let g = {
 					let x = j * this.rect_width;
 					let y =  i * this.rect_height;
 					this.ctx.fillStyle = this.colors[MAP[l][k]];
+					this.ctx.strokeStyle = "gray";
+					this.ctx.strokeRect(x, y, this.rect_width, this.rect_height);
 					this.ctx.fillRect(x, y, this.rect_width, this.rect_height);
 				}
 			}
@@ -31,7 +33,7 @@ let g = {
 	addPlayer(){
 		let ref = this;
 		//this.p.push(new Player(5, 1, 10, ref);
-		this.p = new Player(5, 1, 10, ref);
+		this.p = new Player(1,1, 5, ref);
 	},
 	draw(){
 		this.screen.draw(this);
@@ -58,6 +60,8 @@ let g = {
 				this.p[ action ]();
 			}
 		});
+		this.screen.canvas.width = 500;
+		this.screen.canvas.height = 300;
 		this.screen.rect_width = parseInt(this.screen.canvas.width) / this.screen.width;
 		this.screen.rect_height = parseInt(this.screen.canvas.height) / this.screen.height;
 		this.draw();

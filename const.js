@@ -1,12 +1,18 @@
-//MAP ??????????????????????????
 const JUMP_SIZE = 20;
-const MAX_JUMP_KEY_DOWN = 300;
+const TIME_KEY_DOWN = 300;
 const TIMEOUT = 50;
-const direction = {
-	up: {x: 0, y: 1},
-	down: {x: 0, y: -1},
-	left: {x: -4, y: 0},
-	right: {x: 4, y: 0}
+const SPEED = {
+	jump: 1,
+	fall: 1,
+	side: 1,
+	left: this.side,
+	right: this.side
+};
+let direction = {//minimum 2 sinon equivalent a 0
+	up: {x: 0, y: 2},
+	down: {x: 0, y: -2},
+	left: {x: -2, y: 0},
+	right: {x: 2, y: 0}
 
 };
 const bodys = {
@@ -40,12 +46,13 @@ let M = {
 		}
 		return mat;
 	},
-	make(a,b){
+	make(a, b, c = 10){
 		let mat = new Array(a);
 		for(let i = 0, l = 0; i < a; i++){
 			mat[i] = [];
 			for(let j = 0; j < b; j++){
-				if( i === 0 || j == 0 || i == a-1 || j == b-1 || j % 15 === 0){
+				if( i === 0 || j == 0 || i == a-1 || j == b-1 || j % c === 0 && i < 10){
+				//if( j % c === 0 && j !== 0){
 					mat[i][j] = 1;
 				}else{
 					mat[i][j] = 0;
@@ -60,4 +67,4 @@ let M = {
 		y: []
 	}
 };
-const MAP = M.make2(100, 200);
+const MAP = M.make(30, 50);

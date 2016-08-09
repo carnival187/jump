@@ -4,9 +4,9 @@ class Player{
 		this.y = y;
 		this.body = bodys.makeSquare(size);
 		this.is = {};
+		this.speed = {};
 		this.timers = {};
 		this.g = that;
-		console.log(this.g.colors);
 	}
 	draw(){
 		let screen = this.g.screen;
@@ -28,43 +28,66 @@ class Player{
 	vertical(y){
 		if(y !== 0){
 			let t = [];
-			this.body.forEach( v, k =>{
-				t[k] = 0;
-				for(let i = 1; i <= Math.abs(y); i++){
-					if(MAP[this.y + i][this.x] === 0){
-						t[k] += Math.sign(y);
+			const u = Math.sign(y);
+			for(let v of this.body){
+				let k = 0;
+		if(y > 0){console.log("jump" + y);}
+				for(let i = u; i !== y; i += u){
+					if(Array.isArray(MAP[this.y + v.y + i]) && MAP[this.y + v.y + i][this.x + v.x] === 0){
+						k += u;
 					}
 					else{
 						break;
 					}
 				}
-			}, this);
-			return Math.min(...t);
+				if(k === 0){return 0;}
+				t.push(k);
+			}
+			console.log("y : "+t);
+			let r = (u > 0) ? Math.min(...t) : Math.max(...t);
+			console.log(r);
+			return r;
 		}
 		return 0;
 	}
 	horizontal(x){
 		if(x !== 0){
 			let t = [];
-			this.body.forEach( v, k =>{
-				t[k] = 0;
-				for(let i = 1; i <= Math.abs(x); i++){
-					if(MAP[this.y][this.x + i] === 0){
-						t[k] += Math.sign(x);
+			const u = Math.sign(x);
+			for(let v of this.body){
+				let k = 0;
+				for(let i = u; i !== x; i += u){
+					if(Array.isArray(MAP[this.y + v.y]) && MAP[this.y + v.y][this.x + v.x + i] === 0){
+						k += u;
 					}
 					else{
 						break;
 					}
 				}
-			}, this);
-			return Math.min(...t);
+				if(k === 0){return 0;}
+				t.push(k);
+			}
+			console.log("y : "+t);
+			let r = (u > 0) ? Math.min(...t) : Math.max(...t);
+			console.log(r);
+			return r;
 		}
 		return 0;
 	}
-	move(d){
-		this.x += d.x;
-		this.y += d.y;
-		this.g.draw();
+	move(d, jp = false){
+		const r = {
+			x: this.horizontal(d.x),
+			y: this.vertical(d.y) 
+		};
+		if(r.x !== 0 || r.y !== 0){
+			console.log(this.x + "=> ");
+			this.x += r.x;
+			this.y += r.y;
+			this.g.draw();
+			console.log(" => " + this.x);
+			return true;
+		}
+		return false;
 	}
 
 	jump(){
@@ -93,8 +116,7 @@ class Player{
 		}
 	}
 	falling(me){
-		if(me.clear(direction.down)) {
-			me.move(direction.down);
+		if(me.move(direction.down)) {
 			setTimeout(me.falling, TIMEOUT, me);
 		}
 		else{
@@ -102,15 +124,13 @@ class Player{
 		}
 	}
 	lefting(me){
-		if(me.clear(direction.left)){
-			me.move(direction.left);
+		if(me.move(direction.left)){
 			me.fall();
 		}
 		me.timers.left = setTimeout(me.lefting, TIMEOUT, me);
 	}
 	righting(me){
-		if(me.clear(direction.right) ){
-			me.move(direction.right);
+		if(me.move(direction.right) ){
 			me.fall();
 		}
 		me.timers.right = setTimeout(me.righting, TIMEOUT, me);
@@ -119,9 +139,7 @@ class Player{
 		if(me.jumpSize > 0)
 		{
 			me.jumpSize--;
-			if(me.clear(direction.up)){
-				me.move(direction.up);
-			}
+			me.move(direction.up);
 			setTimeout(me.jumping, TIMEOUT, me);
 		}
 		else{
