@@ -6,8 +6,8 @@ let g = {
 	screen : {
 		x: null,
 		y: null,
-		width: 50,
-		height: 30,
+		width: 100,
+		height: 50,
 		canvas : document.createElement('canvas'),
 		ctx: {},
 		colors : ["white", "green","red","blue","orange"],

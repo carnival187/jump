@@ -1,6 +1,6 @@
-const JUMP_SIZE = 20;
+const JUMP_SIZE = 7;
 const TIME_KEY_DOWN = 300;
-const TIMEOUT = 50;
+const TIMEOUT = 30;
 const SPEED = {
 	jump: 1,
 	fall: 1,
@@ -9,10 +9,10 @@ const SPEED = {
 	right: this.side
 };
 let direction = {//minimum 2 sinon equivalent a 0
-	up: {x: 0, y: 2},
-	down: {x: 0, y: -2},
-	left: {x: -2, y: 0},
-	right: {x: 2, y: 0}
+	up: {x: 0, y: 3},
+	down: {x: 0, y: -3},
+	left: {x: -3, y: 0},
+	right: {x: 3, y: 0}
 
 };
 const bodys = {
@@ -61,10 +61,5 @@ let M = {
 		}
 		return mat;
 	},
-	
-	test : {//marche pas....
-		x: [],
-		y: []
-	}
 };
-const MAP = M.make(30, 50);
+const MAP = M.make(300, 600);

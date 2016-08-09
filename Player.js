@@ -31,7 +31,6 @@ class Player{
 			const u = Math.sign(y);
 			for(let v of this.body){
 				let k = 0;
-		if(y > 0){console.log("jump" + y);}
 				for(let i = u; i !== y; i += u){
 					if(Array.isArray(MAP[this.y + v.y + i]) && MAP[this.y + v.y + i][this.x + v.x] === 0){
 						k += u;
@@ -43,9 +42,7 @@ class Player{
 				if(k === 0){return 0;}
 				t.push(k);
 			}
-			console.log("y : "+t);
 			let r = (u > 0) ? Math.min(...t) : Math.max(...t);
-			console.log(r);
 			return r;
 		}
 		return 0;
@@ -67,9 +64,7 @@ class Player{
 				if(k === 0){return 0;}
 				t.push(k);
 			}
-			console.log("y : "+t);
 			let r = (u > 0) ? Math.min(...t) : Math.max(...t);
-			console.log(r);
 			return r;
 		}
 		return 0;
@@ -80,11 +75,9 @@ class Player{
 			y: this.vertical(d.y) 
 		};
 		if(r.x !== 0 || r.y !== 0){
-			console.log(this.x + "=> ");
 			this.x += r.x;
 			this.y += r.y;
 			this.g.draw();
-			console.log(" => " + this.x);
 			return true;
 		}
 		return false;
