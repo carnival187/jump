@@ -1,0 +1,4 @@
+class Thing{
+	constructor(){}
+	draw(){}
+}

@@ -1,15 +1,11 @@
-/**
- * Au final le constructor devrai aller tout chercher dans un db
- */
 class Map{
 	constructor(){
 		this.body = this.make(100, 200);
 		this.start = { x: 0, y: 0};
 		this.end = { x: 0, y: 0};
 		this.colors = ["red", "green"];
-//~~		this.div = document.createElement('div');
-//~~		document.body.appendChild(this.div);
-//~~		this.display();
+		
+		this.things = [];
 	}
 
 

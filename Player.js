@@ -10,7 +10,26 @@ class Player{
 		this.g = that;
 		this.state = null; //ondessine en fct de l'etat
 		//un objet pour les valeurs nécéssaires au dessin
-	}
+	},
+	events(){
+		this.keys[37] = "left";
+		this.keys[32] = "jump";
+		this.keys[38] = "jump";
+		this.keys[39] = "right";
+		document.addEventListener('keydown', (e)=>{
+			if(this.keys[e.keyCode]){
+				e.preventDefault();
+				this.p[ this.keys[e.keyCode] ]();
+			}
+		});
+		document.addEventListener('keyup', (e)=>{
+			if(this.keys[e.keyCode]){
+				e.preventDefault();
+				let action = this.keys[e.keyCode] + "End"; 
+				this.p[ action ]();
+			}
+		});
+	},
 	draw(){
 		let screen = this.g.screen;
 		screen.ctx.fillStyle = screen.colors[2];
