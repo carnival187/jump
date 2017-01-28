@@ -1,173 +1,31 @@
 class Player{
-	constructor(that){
+	constructor(){
 		this.x = 1;
 		this.y = 1;
 		this.size = 10;
-		this.body = bodys.makeSquare(this.size);
-		this.is = {};
-		this.speed = {};
-		this.timers = {};
-		this.g = that;
-		this.state = null; //ondessine en fct de l'etat
-		//un objet pour les valeurs nécéssaires au dessin
-	},
-	events(){
+		this.color = 'red';
+		this.keys = [];//new Map??????????????????????????????
 		this.keys[37] = "left";
 		this.keys[32] = "jump";
 		this.keys[38] = "jump";
 		this.keys[39] = "right";
-		document.addEventListener('keydown', (e)=>{
+	}
+	events(){
+		document.addEventListener('keydown', (e) => {
 			if(this.keys[e.keyCode]){
 				e.preventDefault();
-				this.p[ this.keys[e.keyCode] ]();
+				this[ this.keys[e.keyCode] ]();
 			}
 		});
 		document.addEventListener('keyup', (e)=>{
 			if(this.keys[e.keyCode]){
 				e.preventDefault();
 				let action = this.keys[e.keyCode] + "End"; 
-				this.p[ action ]();
+				this[ action ]();
 			}
 		});
-	},
-	draw(){
-		let screen = this.g.screen;
-		screen.ctx.fillStyle = screen.colors[2];
-		const X = this.x - screen.x;
-		const Y = screen.height - (this.y - screen.y);
-		screen.ctx.fillRect(X * screen.rect_width, Y * screen.rect_height - this.size * screen.rect_height,
-					screen.rect_width * this.size, screen.rect_height * this.size);
 	}
-	clear(d){
-		return this.body.every( (v)=>{
-			const Y =  this.y + v.y + d.y;
-			const X =  this.x + v.x + d.x;
-			return !(Y < 0 || X < 0 || this.that.map.body[Y][X] !== 0);
-		});
+	draw(ctx){
+		ctx.fillStyle = this.color;
 	}
-	vertical(y){
-		if(y !== 0){
-			let t = [];
-			const u = Math.sign(y);
-			for(let v of this.body){
-				let k = 0;
-				for(let i = u; i !== y; i += u){
-					if(Array.isArray(this.g.map.body[this.y + v.y + i]) && this.g.map.body[this.y + v.y + i][this.x + v.x] === 0){
-						k += u;
-					}
-					else{
-						break;
-					}
-				}
-				if(k === 0){return 0;}
-				t.push(k);
-			}
-			let r = (u > 0) ? Math.min(...t) : Math.max(...t);
-			return r;
-		}
-		return 0;
-	}
-	horizontal(x){
-		if(x !== 0){
-			let t = [];
-			const u = Math.sign(x);
-			for(let v of this.body){
-				let k = 0;
-				for(let i = u; i !== x; i += u){
-					if(Array.isArray(this.g.map.body[this.y + v.y]) && this.g.map.body[this.y + v.y][this.x + v.x + i] === 0){
-						k += u;
-					}
-					else{
-						break;
-					}
-				}
-				if(k === 0){return 0;}
-				t.push(k);
-			}
-			let r = (u > 0) ? Math.min(...t) : Math.max(...t);
-			return r;
-		}
-		return 0;
-	}
-	move(d, jp = false){
-		const r = {
-			x: this.horizontal(d.x),
-			y: this.vertical(d.y) 
-		};
-		if(r.x !== 0 || r.y !== 0){
-			this.x += r.x;
-			this.y += r.y;
-			this.g.draw();
-			return true;
-		}
-		return false;
-	}
-
-	jump(){
-		if(!this.is.jumping && !this.is.falling){
-			this.is.jumping = true;
-			this.jumpSize = JUMP_SIZE;
-			this.jumping(this);
-		}
-	}
-	left(){
-		if(!this.is.lefting && !this.is.righting){
-			this.is.lefting = true;
-			this.lefting(this); 
-		}
-	}
-	right(){
-		if(!this.is.lefting && !this.is.righting){
-			this.is.righting = true;
-			this.righting(this); 
-		}
-	}
-	fall(){
-		if(!this.is.jumping && !this.is.falling) {
-			this.is.falling = true;
-			this.falling(this);
-		}
-	}
-	falling(me){
-		if(me.move(direction.down)) {
-			setTimeout(me.falling, TIMEOUT, me);
-		}
-		else{
-			me.is.falling = false;
-		}
-	}
-	lefting(me){
-		if(me.move(direction.left)){
-			me.fall();
-		}
-		me.timers.left = setTimeout(me.lefting, TIMEOUT, me);
-	}
-	righting(me){
-		if(me.move(direction.right) ){
-			me.fall();
-		}
-		me.timers.right = setTimeout(me.righting, TIMEOUT, me);
-	}
-	jumping(me){
-		if(me.jumpSize > 0)
-		{
-			me.jumpSize--;
-			me.move(direction.up);
-			setTimeout(me.jumping, TIMEOUT, me);
-		}
-		else{
-			me.is.jumping = false;
-			me.is.falling = true;
-			me.falling(me);
-		}
-	}
-	leftEnd(){
-		this.is.lefting = false;
-		clearTimeout(this.timers.left);
-	}
-	rightEnd(){
-		this.is.righting = false;
-		clearTimeout(this.timers.right);
-	}
-	jumpEnd(){}
 }

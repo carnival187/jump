@@ -1,4 +1,7 @@
 class Thing{
 	constructor(){}
-	draw(){}
+
+	draw(ctx){
+	
+	}
 }
