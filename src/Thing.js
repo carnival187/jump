@@ -7,11 +7,14 @@ class Thing{
 	}
 
 	draw(game){
+		const screen = game.screen;
+		const ctx = screen.ctx;
 		const X = Math.abs(this.x - game.player.x);
+
 		if(X < screen.width / 2)
 		{
-			game.ctx.fillStyle = this.color;
-			game.ctx.fillRect(this.x - screen.x, this.y, this.size, this.size);
+			ctx.fillStyle = this.color;
+			ctx.fillRect(this.x - screen.x, this.y, this.size, this.size);
 		}
 	}
 }
