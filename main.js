@@ -1,3 +1,4 @@
+//import Game from './src/Game.js';
 
 let canvas = document.createElement('canvas');
 
@@ -9,3 +10,6 @@ document.body.appendChild(canvas);
 const GAME = new Game(canvas);
 
 GAME.start();
+//GAME.stop();
+
+console.log('test')

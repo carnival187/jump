@@ -1,5 +1,4 @@
 #test
 
-gerer les contacts entre elements
 
-seulement 4 directions distincte?????
+Mettre en place webpack
