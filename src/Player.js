@@ -5,29 +5,46 @@ class Player{
 		this.y = 2;
 		this.size = 50;
 		this.color = 'red';
-		this.keys = [];//new Map/SET??????????????????????????????
-		this.keys[37] = "left";
-		this.keys[32] = "jump";
-		this.keys[38] = "jump";
-		this.keys[39] = "right";
+		this.keys = new Map();
+		this.keydown = new Map();
+		this.keys.set(37, "left");
+		this.keydown.set("left", false);
+		this.keys.set(32, "jump");
+		this.keys.set(38, "jump");
+		this.keydown.set("jump", false);
+		this.keys.set(39, "right");
+		this.keydown.set("right", false);
+		};
 		this.is = {};
 		this.up = 5;
 		this.direction = new Direction();
 	}
 	events(){
 		document.addEventListener('keydown', (e) => {
-			if(this.keys[e.keyCode]){
+			if(this.keys.get(e.keyCode)){
 				e.preventDefault();
-				this[this.keys[e.keyCode]]();
+				const a = this.keys.get(e.keyCode);
+				this[a]();
+				this.kewdown.set(a, true);
 			}
 		});
-		//document.addEventListener('keydown', (e) => { });
+		document.addEventListener('keydown', (e) => {
+			if(this.keys.get(e.keyCode)){
+				e.preventDefault();
+				this.kewdown.set(this.keys.get(e.keyCode), false);
+			}
+		});
 	}
 	draw(){
 		const X = (this.x < this.screen.width/2) ? this.x : this.screen.width/2;
 
 		this.screen.ctx.fillStyle = this.color;
 		this.screen.ctx.fillRect(X, this.y, this.size, this.size);
+	}
+	gravity(){
+		this.keydown.forEach( (v,k) => {
+			
+		});
 	}
 	update(direction){
 		this.x += this.direction.x;
