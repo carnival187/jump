@@ -18,14 +18,18 @@ class Game{
 			v.draw(this);
 		}, this);
 	}
+	update(){
+		this.player.update();
+	}
+	playing(self){
+		self.update();
+		self.draw();
+		self.timerOut = window.setTimeout(self.playing, self.screen.frame, self);
+	}
 	start(){
 		this.player.events(this.screen);
 		this.getThings();
-		this.drawing();
-	}
-	drawing(){
-		this.draw();
-		this.timerOut = window.setTimeout( () => this.drawing(), this.screen.frame);
+		this.playing(this);
 	}
 	stop(){
 		window.clearTimeout(this.timerOut);
@@ -37,14 +41,5 @@ class Game{
 			new Thing({x: 204, y: 13}),
 			new Thing({x: 24,  y:113})
 		];
-	}
-	events(){
-		document.addEventListener('keydown', (e) => {
-			if(this.keys[e.keyCode]){
-				e.preventDefault();
-				this.player.move(this.keys[e.keyCode]);
-				this.screen.move(this.keys[e.keyCode]);
-			}
-		});
 	}
 };

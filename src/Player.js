@@ -4,7 +4,6 @@ class Player{
 		this.x = 2;
 		this.y = 2;
 		this.size = 50;
-		this.speed = 10;
 		this.color = 'red';
 		this.keys = [];//new Map/SET??????????????????????????????
 		this.keys[37] = "left";
@@ -12,7 +11,8 @@ class Player{
 		this.keys[38] = "jump";
 		this.keys[39] = "right";
 		this.is = {};
-		this.up = 56;
+		this.up = 5;
+		this.direction = new Direction();
 	}
 	events(){
 		document.addEventListener('keydown', (e) => {
@@ -26,37 +26,39 @@ class Player{
 	draw(){
 		const X = (this.x < this.screen.width/2) ? this.x : this.screen.width/2;
 
-		this.screen.ctx.fillStyle = this.color;//en propriete????nop
+		this.screen.ctx.fillStyle = this.color;
 		this.screen.ctx.fillRect(X, this.y, this.size, this.size);
 	}
-	move(direction){
-		this.x += direction.x * this.speed;
+	update(direction){
+		this.x += this.direction.x;
 		this.x = (this.x < 0) ? 0 : this.x;
-		this.y += direction.y * this.speed;
+		this.y += this.direction.y;
 		this.y = (this.y < 0) ? 0 : this.y;
+
 		this.screen.x = (this.x - this.screen.width / 2);
 	}
-	left(){ this.move({x: -2, y: 0}); }
-	right(){ this.move({x: 2, y: 0}); }
 
-	falling(){
-		if(this.y > 0){
-			this.move({x: 0, y: -2});
-			window.setTimeout(this.falling, 100);
+	left(){ this.direction.x -= 2; }
+	right(){ this.direction.x += 2; }
+
+	falling(self){
+		if(self.y > 0){
+			self.move({x: 0, y: -2});
+			window.setTimeout(self.falling, 100, self);
 		}
 	}
 
-	jumping(up){
-		if(up < this.up){
-			this.move({x:0, y: 1});
-			window.setTimeout((up) => this.jumping(), 100, up + 1);
+	jumping(self, up){
+		if(up < self.up){
+			self.move({x:0, y: 1});
+			window.setTimeout(self.jumping, 100, self, up + 1);
 			console.log('jumping');
 		}
 		else{
-			this.falling();
+			self.falling(self);
 		}
 	}
 	jump(){
-		this.jumping(0);
+		this.jumping(this, 0);
 	}
 }
