@@ -1,6 +1,6 @@
 class Direction{
-	constructor(x = 0, y = 0){
-		this.x = x;
-		this.y = y;
+	constructor(name){
+		this.name = name;
+		this.down = false;
 	}
 }

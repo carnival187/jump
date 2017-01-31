@@ -4,34 +4,30 @@ class Player{
 		this.x = 2;
 		this.y = 2;
 		this.size = 50;
+		this.weight = 2;
 		this.color = 'red';
 		this.keys = new Map();
-		this.keydown = new Map();
-		this.keys.set(37, "left");
-		this.keydown.set("left", false);
-		this.keys.set(32, "jump");
-		this.keys.set(38, "jump");
-		this.keydown.set("jump", false);
-		this.keys.set(39, "right");
-		this.keydown.set("right", false);
-		};
+		this.keys.set(37, new Direction("left"));
+		this.keys.set(38, new Direction("jump"));
+		this.keys.set(39, new Direction("right"));
+		this.keys.set(32, new Direction("jump"));
 		this.is = {};
 		this.up = 5;
-		this.direction = new Direction();
+		this.direction = new Position();//////////////////////////////////////
 	}
 	events(){
 		document.addEventListener('keydown', (e) => {
 			if(this.keys.get(e.keyCode)){
 				e.preventDefault();
 				const a = this.keys.get(e.keyCode);
-				this[a]();
-				this.kewdown.set(a, true);
+				this[a.name]();
 			}
 		});
-		document.addEventListener('keydown', (e) => {
+		document.addEventListener('keyup', (e) => {
 			if(this.keys.get(e.keyCode)){
 				e.preventDefault();
-				this.kewdown.set(this.keys.get(e.keyCode), false);
+				const a = this.keys.get(e.keyCode);
+				this.is[a.name + 'ing'] = false;
 			}
 		});
 	}
@@ -42,11 +38,22 @@ class Player{
 		this.screen.ctx.fillRect(X, this.y, this.size, this.size);
 	}
 	gravity(){
-		this.keydown.forEach( (v,k) => {
-			
-		});
+		if(!(this.is.lefting || this.is.righting)){
+			this.direction.x += Math.sign(this.direction.x) * -1 * this.weight;
+		}
+		if(this.is.jumping){
+			this.direction.y -= 2;
+			if(this.direction.y <= 0){
+				this.direction.y = 0;
+				this.is.jumping = false;
+			}
+		}
+		else{
+			this.direction.y = (this.y > 0) ? -this.weight : 0;	
+		}
 	}
 	update(direction){
+		this.gravity();
 		this.x += this.direction.x;
 		this.x = (this.x < 0) ? 0 : this.x;
 		this.y += this.direction.y;
@@ -55,27 +62,16 @@ class Player{
 		this.screen.x = (this.x - this.screen.width / 2);
 	}
 
-	left(){ this.direction.x -= 2; }
-	right(){ this.direction.x += 2; }
-
-	falling(self){
-		if(self.y > 0){
-			self.move({x: 0, y: -2});
-			window.setTimeout(self.falling, 100, self);
-		}
+	left(){
+		this.direction.x -= 2;
+		this.is.lefting = true;
 	}
-
-	jumping(self, up){
-		if(up < self.up){
-			self.move({x:0, y: 1});
-			window.setTimeout(self.jumping, 100, self, up + 1);
-			console.log('jumping');
-		}
-		else{
-			self.falling(self);
-		}
+	right(){
+		this.direction.x += 2;
+		this.is.righting = true;
 	}
 	jump(){
-		this.jumping(this, 0);
+		this.direction.y = 16;
+		this.is.jumping = true;
 	}
 }
