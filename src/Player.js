@@ -4,6 +4,8 @@ class Player{
 		this.x = 2;
 		this.y = 2;
 		this.size = 50;
+		this.width = 50;
+		this.height = 50;
 		this.weight = 2;
 		this.color = 'red';
 		this.keys = new Map();
@@ -12,7 +14,7 @@ class Player{
 		this.keys.set(39, new Direction("right"));
 		this.keys.set(32, new Direction("jump"));
 		this.is = {};
-		this.up = 5;
+		this.up = 15;
 		this.direction = new Position();//////////////////////////////////////
 	}
 	events(){
@@ -52,14 +54,24 @@ class Player{
 			this.direction.y = (this.y > 0) ? -this.weight : 0;	
 		}
 	}
-	update(direction){
+	update(things){
 		this.gravity();
 		this.x += this.direction.x;
 		this.x = (this.x < 0) ? 0 : this.x;
 		this.y += this.direction.y;
 		this.y = (this.y < 0) ? 0 : this.y;
-
+		for(let v of things){
+			if(this.collision(v)){
+				console.log('testCollision');
+			}
+		}
 		this.screen.x = (this.x - this.screen.width / 2);
+	}
+	collision(thing){
+		return !(this.x >= thing.x + thing.width ||
+			this.x + this.width <= thing.x ||
+			this.y >= thing.y + thing.height ||
+			this.y + this.height <= thing.y);
 	}
 
 	left(){
@@ -71,7 +83,7 @@ class Player{
 		this.is.righting = true;
 	}
 	jump(){
-		this.direction.y = 16;
+		this.direction.y = this.up;
 		this.is.jumping = true;
 	}
 }

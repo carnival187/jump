@@ -19,7 +19,7 @@ class Game{
 		}, this);
 	}
 	update(){
-		this.player.update();
+		this.player.update(this.things);
 	}
 	playing(self){
 		self.update();

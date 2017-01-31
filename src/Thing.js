@@ -3,7 +3,8 @@ class Thing{
 		this.x = options.x;
 		this.y = options.y;
 		this.color = options.color || 'green';
-		this.size = options.size || 54;
+		this.width = options.width || 54;
+		this.height = options.height || 54;
 	}
 
 	draw(game){
@@ -14,7 +15,7 @@ class Thing{
 		if(X < screen.width / 2)
 		{
 			ctx.fillStyle = this.color;
-			ctx.fillRect(this.x - screen.x, this.y, this.size, this.size);
+			ctx.fillRect(this.x - screen.x, this.y, this.width, this.height);
 		}
 	}
 }
