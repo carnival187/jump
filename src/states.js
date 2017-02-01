@@ -26,16 +26,13 @@ class Circle extends Position{
 	}
 
 	rectangle(rect){
-		const a = !(rect.x >= this.x + this.rayon ||
-		rect.x + rect.width <= this.x - this.rayon ||
-		rect.y >= this.y + this.rayon ||
-		rect.y <= this.y - this.rayon);
-		//////////////////////////a mediter
-		return a ||
-			this.point(rect.x, rect.y) ||
-			this.point(rect.x + rect.width, rect.y) ||
-			this.point(rect.x + rect.width, rect.y + rect.height) ||
-			this.point(rect.x, rect.y + rect.height);
+		if(rect.x >= this.x + this.rayon || rect.x + rect.width <= this.x - this.rayon || rect.y >= this.y + this.rayon || rect.y <= this.y - this.rayon){
+			return false;
+		}
+		if(this.x >= rect.x && this.x <= rect.x + rect.width || this.y >= rect.y && this.y <= rect.y + rect.height){
+			return true;
+		}
+		return (this.point(rect.x, rect.y) || this.point(rect.x + rect.width, rect.y) || this.point(rect.x + rect.width, rect.y + rect.height) || this.point(rect.x, rect.y + rect.height));
 	}
 }
 /*
