@@ -1,4 +1,6 @@
 //import Player from './Player.js';
+//import Thing from './Thing.js';
+//import Screen from './Screen.js';
 
 class Game{
 	constructor(canvas){
