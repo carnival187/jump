@@ -12,10 +12,11 @@ export default class Thing{
 		const ctx = screen.ctx;
 		const X = Math.abs(this.x - game.player.x);
 
-		if(X < screen.width / 2)
+		if(X < screen.width / 2 + game.player.width)
 		{
+			let X = this.x - screen.x;
 			ctx.fillStyle = this.color;
-			ctx.fillRect(this.x - screen.x, this.y, this.width, this.height);
+			ctx.fillRect(X, this.y, this.width, this.height);
 		}
 	}
 }

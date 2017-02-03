@@ -5,5 +5,6 @@ export default class Screen{
 		this.height = canvas.height;
 		this.frame = 30;
 		this.ctx = canvas.getContext('2d');
+		console.log(this.x + ' construt');
 	}
 }

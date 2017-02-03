@@ -18,6 +18,8 @@ export default class Player{
 		this.keys.set(32, new Direction("jump"));
 		this.is = {};
 		this.up = 15;
+		this.acceleration = 4;
+		this.speed = 20;
 		this.direction = new Position();//////////////////////////////////////
 	}
 	events(){
@@ -66,14 +68,9 @@ export default class Player{
 		for(let v of things){
 			//if(this.body.collision[v.name](v)){
 			if(this.collision(v)){
-				console.log(
-`x ${this.x} y: ${this.y} w: ${this.width} h: ${this.height}
- x: ${v.x} y: ${v.y}
- `)
 
 			}
 		}
-		this.screen.x = (this.x - this.screen.width / 2);
 	}
 	collision(thing){
 		return !(this.x >= thing.x + thing.width ||
@@ -83,11 +80,11 @@ export default class Player{
 	}
 
 	left(){
-		this.direction.x -= 2;
+		this.direction.x -= this.direction.x > this.speed * -1 ? this.acceleration : 0;
 		this.is.lefting = true;
 	}
 	right(){
-		this.direction.x += 2;
+		this.direction.x += this.direction.x < this.speed ? this.acceleration : 0;
 		this.is.righting = true;
 	}
 	jump(){

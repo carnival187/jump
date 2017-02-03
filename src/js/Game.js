@@ -22,6 +22,8 @@ export default class Game{
 	}
 	update(){
 		this.player.update(this.things);
+		const X = this.player.x - this.screen.width / 2;
+		this.screen.x = X > 0 ? X : 0;
 	}
 	playing(self){
 		self.update();
@@ -38,9 +40,9 @@ export default class Game{
 	}
 	getThings(){
 		this.things = [
-			//new Thing({x: 264, y: 13}),
-			//new Thing({x: 164, y: 13}),
-			//new Thing({x: 204, y: 13}),
+			new Thing({x: 264, y: 13}),
+			new Thing({x: 164, y: 13}),
+			new Thing({x: 204, y: 13}),
 			new Thing({x: 24,  y:113})
 		];
 	}
