@@ -1,4 +1,4 @@
-class Thing{
+export default class Thing{
 	constructor(options){
 		this.x = options.x;
 		this.y = options.y;

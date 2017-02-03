@@ -1,13 +1,12 @@
 var path = require('path');
+//var webpack = require('webpack');
 
 module.exports = {
-	entry: {
-		app: ['./main.js'],
-	},
+	entry: './src/main.js',
 	output: {
 		path: path.resolve(__dirname, './dist'),
 		filename: 'bundle.js',
-		plublicPath: './'
+		publicPath: '/dist/'
 	},
 	module: {
 		loaders: [
@@ -21,5 +20,6 @@ module.exports = {
 			}
 		]
 	}
+	//,plugins: [ new webpack.optimize.UglifyJsPlugin() ]
 };
 

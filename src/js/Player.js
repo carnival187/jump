@@ -1,4 +1,7 @@
-class Player{
+import Direction from './Direction.js';
+import Position from './Position.js';
+
+export default class Player{
 	constructor(screen){
 		this.screen = screen;
 		this.x = 2;
@@ -41,7 +44,7 @@ class Player{
 	}
 	gravity(){
 		if(!(this.is.lefting || this.is.righting)){
-			this.direction.x += Math.sign(this.direction.x) * -1 * this.weight;
+			this.direction.x -= Math.sign(this.direction.x) * this.weight;
 		}
 		if(this.is.jumping){
 			this.direction.y -= 2;
@@ -61,8 +64,13 @@ class Player{
 		this.y += this.direction.y;
 		this.y = (this.y < 0) ? 0 : this.y;
 		for(let v of things){
+			//if(this.body.collision[v.name](v)){
 			if(this.collision(v)){
-				console.log('testCollision');
+				console.log(
+`x ${this.x} y: ${this.y} w: ${this.width} h: ${this.height}
+ x: ${v.x} y: ${v.y}
+ `)
+
 			}
 		}
 		this.screen.x = (this.x - this.screen.width / 2);

@@ -1,8 +1,8 @@
-//import Player from './Player.js';
-//import Thing from './Thing.js';
-//import Screen from './Screen.js';
+import Player from './Player.js';
+import Thing from './Thing.js';
+import Screen from './Screen.js';
 
-class Game{
+export default class Game{
 	constructor(canvas){
 
 		this.screen = new Screen(canvas);
@@ -38,9 +38,9 @@ class Game{
 	}
 	getThings(){
 		this.things = [
-			new Thing({x: 264, y: 13}),
-			new Thing({x: 164, y: 13}),
-			new Thing({x: 204, y: 13}),
+			//new Thing({x: 264, y: 13}),
+			//new Thing({x: 164, y: 13}),
+			//new Thing({x: 204, y: 13}),
 			new Thing({x: 24,  y:113})
 		];
 	}
