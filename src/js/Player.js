@@ -1,16 +1,12 @@
 import Direction from './Direction.js';
-import Position from './Position.js';
+import Rectangle from './Rectangle.js';
+import Circle from './Circle.js';
 
 export default class Player{
-	constructor(screen){
+	constructor(screen, options = {}){
+		super(options);
+		this.body = new Rectangle({options});
 		this.screen = screen;
-		this.x = 2;
-		this.y = 2;
-		this.size = 50;
-		this.width = 50;
-		this.height = 50;
-		this.weight = 2;
-		this.color = 'red';
 		this.keys = new Map();
 		this.keys.set(37, new Direction("left"));
 		this.keys.set(38, new Direction("jump"));
@@ -20,7 +16,8 @@ export default class Player{
 		this.up = 15;
 		this.acceleration = 4;
 		this.speed = 20;
-		this.direction = new Position();//////////////////////////////////////
+		this.weight = 2;
+		this.direction = {x:0,y:0};
 	}
 	events(){
 		document.addEventListener('keydown', (e) => {
@@ -41,8 +38,7 @@ export default class Player{
 	draw(){
 		const X = (this.x < this.screen.width/2) ? this.x : this.screen.width/2;
 
-		this.screen.ctx.fillStyle = this.color;
-		this.screen.ctx.fillRect(X, this.y, this.size, this.size);
+		this.body.draw(this.screen.ctx);
 	}
 	gravity(){
 		if(!(this.is.lefting || this.is.righting)){

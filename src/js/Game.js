@@ -1,6 +1,7 @@
 import Player from './Player.js';
 import Thing from './Thing.js';
 import Screen from './Screen.js';
+import Service from './Service.js';
 
 export default class Game{
 	constructor(canvas){
@@ -8,16 +9,16 @@ export default class Game{
 		this.screen = new Screen(canvas);
 		this.player = new Player(this.screen);
 
-		this.things = [];
+		this.things = Service.get
 
 	}
 	draw(){
 		this.screen.ctx.clearRect(0,0,this.screen.width,this.screen.height);
 
-		this.player.draw();
+		this.player.body.draw(this.screen);
 
 		this.things.forEach( v => {
-			v.draw(this);
+			v.body.draw(this.screen);
 		}, this);
 	}
 	update(){

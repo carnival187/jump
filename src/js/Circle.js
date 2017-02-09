@@ -1,12 +1,14 @@
+import Body from './Body.js';
 
-export default class Circle extends Position{
-	constructor(){
-		this.rayon = rayon;
-		this.name = "circle";
+export default class Circle extends Body{
+	constructor(options){
+		super(options);
+		this.rayon = options.rayon;
+		this.type = "circle";
 
 	}
 	point(x,y){
-		return (this.x - x) * (this.x - x) + (this.y - y) * this.y - y) < this.rayon * this.rayon;
+		return (this.x - x) * (this.x - x) + (this.y - y) * (this.y - y) < this.rayon * this.rayon;
 
 	}
 	circle(c2){
@@ -21,5 +23,11 @@ export default class Circle extends Position{
 			return true;
 		}
 		return (this.point(rect.x, rect.y) || this.point(rect.x + rect.width, rect.y) || this.point(rect.x + rect.width, rect.y + rect.height) || this.point(rect.x, rect.y + rect.height));
+	}
+	draw(ctx){
+		ctx.beginPath();
+		ctx.arc(this.x, this.y, 100, 0, Math.PI*2, true);
+		ctx.fillStyle = this.color;
+		ctx.fill();
 	}
 }
