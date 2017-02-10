@@ -11,5 +11,4 @@ const GAME = new Game(canvas);
 
 GAME.start();
 
-console.log('tesdt');
 

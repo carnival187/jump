@@ -7,9 +7,9 @@ export default class Game{
 	constructor(canvas){
 
 		this.screen = new Screen(canvas);
-		this.player = new Player(this.screen);
+		this.player = new Player(Service.getPlayerOption());
 
-		this.things = Service.get
+		this.things = Service.getThings();
 
 	}
 	draw(){
@@ -18,12 +18,12 @@ export default class Game{
 		this.player.body.draw(this.screen);
 
 		this.things.forEach( v => {
-			v.body.draw(this.screen);
+			v.body.draw(this.screen, v.body.x - this.screen.x, v.body.y - this.screen.y);
 		}, this);
 	}
 	update(){
 		this.player.update(this.things);
-		const X = this.player.x - this.screen.width / 2;
+		const X = this.player.body.x - this.screen.width / 2;
 		this.screen.x = X > 0 ? X : 0;
 	}
 	playing(self){
@@ -32,19 +32,10 @@ export default class Game{
 		self.timerOut = window.setTimeout(self.playing, self.screen.frame, self);
 	}
 	start(){
-		this.player.events(this.screen);
-		this.getThings();
+		this.player.events();
 		this.playing(this);
 	}
 	stop(){
 		window.clearTimeout(this.timerOut);
-	}
-	getThings(){
-		this.things = [
-			new Thing({x: 264, y: 13}),
-			new Thing({x: 164, y: 13}),
-			new Thing({x: 204, y: 13}),
-			new Thing({x: 24,  y:113})
-		];
 	}
 };

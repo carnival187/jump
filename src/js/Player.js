@@ -2,11 +2,11 @@ import Direction from './Direction.js';
 import Rectangle from './Rectangle.js';
 import Circle from './Circle.js';
 
-export default class Player{
-	constructor(screen, options = {}){
-		super(options);
-		this.body = new Rectangle({options});
-		this.screen = screen;
+export default class Player
+{
+	constructor(options)
+	{
+		this.body = new Rectangle(options);
 		this.keys = new Map();
 		this.keys.set(37, new Direction("left"));
 		this.keys.set(38, new Direction("jump"));
@@ -19,7 +19,8 @@ export default class Player{
 		this.weight = 2;
 		this.direction = {x:0,y:0};
 	}
-	events(){
+	events()
+	{
 		document.addEventListener('keydown', (e) => {
 			if(this.keys.get(e.keyCode)){
 				e.preventDefault();
@@ -35,46 +36,37 @@ export default class Player{
 			}
 		});
 	}
-	draw(){
-		const X = (this.x < this.screen.width/2) ? this.x : this.screen.width/2;
-
-		this.body.draw(this.screen.ctx);
+	draw(screen)
+	{
+		//const X = (this.body.x < screen.width / 2) ? this.body.x : screen.width / 2;
+		this.body.draw(screen, X);
 	}
 	gravity(){
 		if(!(this.is.lefting || this.is.righting)){
 			this.direction.x -= Math.sign(this.direction.x) * this.weight;
 		}
 		if(this.is.jumping){
-			this.direction.y -= 2;
-			if(this.direction.y <= 0){
+			this.direction.y -= this.weight;
+			if(this.direction.y <= 0)
+			{
 				this.direction.y = 0;
 				this.is.jumping = false;
 			}
 		}
 		else{
-			this.direction.y = (this.y > 0) ? -this.weight : 0;	
+			this.direction.y = (this.body.y > 0) ? -this.weight : 0;	
 		}
 	}
 	update(things){
 		this.gravity();
-		this.x += this.direction.x;
-		this.x = (this.x < 0) ? 0 : this.x;
-		this.y += this.direction.y;
-		this.y = (this.y < 0) ? 0 : this.y;
+		this.body.x += this.direction.x;
+		this.body.x = (this.body.x < 0) ? 0 : this.body.x;
+		this.body.y += this.direction.y;
+		this.body.y = (this.y < 0) ? 0 : this.body.y;
 		for(let v of things){
 			//if(this.body.collision[v.name](v)){
-			if(this.collision(v)){
-
-			}
 		}
 	}
-	collision(thing){
-		return !(this.x >= thing.x + thing.width ||
-			this.x + this.width <= thing.x ||
-			this.y >= thing.y + thing.height ||
-			this.y + this.height <= thing.y);
-	}
-
 	left(){
 		this.direction.x -= this.direction.x > this.speed * -1 ? this.acceleration : 0;
 		this.is.lefting = true;

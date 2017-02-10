@@ -24,10 +24,10 @@ export default class Circle extends Body{
 		}
 		return (this.point(rect.x, rect.y) || this.point(rect.x + rect.width, rect.y) || this.point(rect.x + rect.width, rect.y + rect.height) || this.point(rect.x, rect.y + rect.height));
 	}
-	draw(ctx){
-		ctx.beginPath();
-		ctx.arc(this.x, this.y, 100, 0, Math.PI*2, true);
-		ctx.fillStyle = this.color;
-		ctx.fill();
+	draw(screen, x = this.x, y = this.y){
+		screen.ctx.beginPath();
+		screen.ctx.arc(x, y, 10, 0, Math.PI * 2, true);
+		screen.ctx.fillStyle = this.color;
+		screen.ctx.fill();
 	}
 }

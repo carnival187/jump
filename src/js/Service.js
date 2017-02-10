@@ -1,3 +1,4 @@
+import Thing from './Thing.js';
 
 export default class Service{
 	constructor(){}
@@ -9,12 +10,12 @@ export default class Service{
 		}
 	}
 
-	static getThingsOptions(){
+	static getThings(){
 		return [
-			new Rectangle({x: 264, y: 13, color: "green"}),
-			new Rectangle({x: 164, y: 13, color: "green"}),
-			new Rectangle({x: 204, y: 13, color: "green"}),
-			new Rectangle({x: 24,  y:113, color: "green"})
+		new Thing({x: 264, y: 13, color: "green", width: 30, height: 30}),
+		new Thing({x: 164, y: 13, color: "green", width: 30, height: 30}),
+		new Thing({x: 204, y: 13, color: "green", width: 30, height: 30}),
+		new Thing({x: 24,  y:113, color: "green", width: 30, height: 30})
 		];
 	}
 }
