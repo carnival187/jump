@@ -15,7 +15,8 @@ export default class Game{
 	draw(){
 		this.screen.ctx.clearRect(0,0,this.screen.width,this.screen.height);
 
-		this.player.body.draw(this.screen);
+
+		this.player.draw(this.screen);
 
 		this.things.forEach( v => {
 			v.body.draw(this.screen, v.body.x - this.screen.x, v.body.y - this.screen.y);
@@ -25,6 +26,7 @@ export default class Game{
 		this.player.update(this.things);
 		const X = this.player.body.x - this.screen.width / 2;
 		this.screen.x = X > 0 ? X : 0;
+
 	}
 	playing(self){
 		self.update();

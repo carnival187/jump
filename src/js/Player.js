@@ -38,7 +38,7 @@ export default class Player
 	}
 	draw(screen)
 	{
-		//const X = (this.body.x < screen.width / 2) ? this.body.x : screen.width / 2;
+		const X = (this.body.x < screen.width / 2) ? this.body.x : screen.width / 2;
 		this.body.draw(screen, X);
 	}
 	gravity(){
