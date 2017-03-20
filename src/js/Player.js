@@ -57,16 +57,24 @@ export default class Player
 			this.direction.y = (this.body.y > 0) ? -this.weight : 0;	
 		}
 	}
-	update(things){
+	update(things)
+	{
 		this.gravity();
 		this.body.x += this.direction.x;
 		this.body.x = (this.body.x < 0) ? 0 : this.body.x;
 		this.body.y += this.direction.y;
 		this.body.y = (this.y < 0) ? 0 : this.body.y;
-		for(let v of things){
-			//if(this.body.collision[v.name](v)){
+		for(let v of things)
+		{
+			while(this.body[v.body.type](v.body))
+			{
+				console.log('contact');
+				this.body.x -= Math.sign(this.direction.x);
+				this.body.y -= Math.sign(this.direction.y);
+			}
 		}
 	}
+	contact(){ }
 	left(){
 		this.direction.x -= this.direction.x > this.speed * -1 ? this.acceleration : 0;
 		this.is.lefting = true;

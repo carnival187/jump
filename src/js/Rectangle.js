@@ -9,6 +9,12 @@ export default class Rectangle extends Body
 		this.width = options.width;
 		this.height = options.height;
 	}
+	contact(v){//collision avec un rectangle
+		//contact general .????????????? cyril
+
+		//this.x + ?
+		//this.y + ?
+	}
 	rectangle(r2)
 	{
 		return !(this.x >= r2.x + r2.width ||

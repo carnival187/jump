@@ -15,7 +15,6 @@ export default class Game{
 	draw(){
 		this.screen.ctx.clearRect(0,0,this.screen.width,this.screen.height);
 
-
 		this.player.draw(this.screen);
 
 		this.things.forEach( v => {
