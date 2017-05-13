@@ -15,7 +15,7 @@ export default class Player
 		this.is = {};
 		this.up = 15;
 		this.acceleration = 4;
-		this.speed = 20;
+		this.speed = 10;
 		this.weight = 2;
 		this.direction = {x:0,y:0};
 	}
@@ -42,7 +42,8 @@ export default class Player
 		this.body.draw(screen, X);
 	}
 	gravity(){
-		if(!(this.is.lefting || this.is.righting)){
+		if(!(this.is.lefting || this.is.righting))
+		{
 			this.direction.x -= Math.sign(this.direction.x) * this.weight;
 		}
 		if(this.is.jumping){
@@ -53,7 +54,8 @@ export default class Player
 				this.is.jumping = false;
 			}
 		}
-		else{
+		else
+		{
 			this.direction.y = (this.body.y > 0) ? -this.weight : 0;	
 		}
 	}
@@ -68,9 +70,8 @@ export default class Player
 		{
 			while(this.body[v.body.type](v.body))
 			{
-				console.log('contact');
+				this.body.y -= this.direction.y / this.direction.x;
 				this.body.x -= Math.sign(this.direction.x);
-				this.body.y -= Math.sign(this.direction.y);
 			}
 		}
 	}
