@@ -9,12 +9,9 @@ export default class Rectangle extends Body
 		this.width = options.width;
 		this.height = options.height;
 	}
-	contact(v){//collision avec un rectangle
-		//contact general .????????????? cyril
-
-		//this.x + ?
-		//this.y + ?
-	}
+	/**
+	 * retourne true si il y a collision
+	 */
 	rectangle(r2)
 	{
 		return !(this.x >= r2.x + r2.width ||
@@ -24,8 +21,7 @@ export default class Rectangle extends Body
 	}
 	circle(c2)
 	{
-		//if(!this.rectangle
-
+		return c2.rectangle(this);
 	}
 	draw(screen, x = this.x, y = this.y)
 	{

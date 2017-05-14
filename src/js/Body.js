@@ -1,10 +1,14 @@
-import Position from "./Position.js";
+export default class Body{
 
-export default class Body extends Position{
-
-	constructor(options){
-		super(options.x, options.y);
+	constructor(options)
+	{
+		this.x = options.x;
+		this.y = options.y;
 		this.color = options.color;
 		this.bounce = 0;//le rebondi 0 <= bounce <= 1
+	}
+	pythagore(x,y)
+	{
+		return (this.x - x) * (this.x - x) + (this.y - y) * (this.y - y) < this.rayon * this.rayon;
 	}
 }

@@ -7,12 +7,8 @@ export default class Circle extends Body{
 		this.type = "circle";
 
 	}
-	point(x,y){
-		return (this.x - x) * (this.x - x) + (this.y - y) * (this.y - y) < this.rayon * this.rayon;
-
-	}
-	circle(c2){
-		return point(c2.x, c2.y);
+	circle(c){
+		return pythagore(c.x, c.y);
 	}
 
 	rectangle(rect){
@@ -22,7 +18,7 @@ export default class Circle extends Body{
 		if(this.x >= rect.x && this.x <= rect.x + rect.width || this.y >= rect.y && this.y <= rect.y + rect.height){
 			return true;
 		}
-		return (this.point(rect.x, rect.y) || this.point(rect.x + rect.width, rect.y) || this.point(rect.x + rect.width, rect.y + rect.height) || this.point(rect.x, rect.y + rect.height));
+		return (this.pythagore(rect.x, rect.y) || this.pythagore(rect.x + rect.width, rect.y) || this.pythagore(rect.x + rect.width, rect.y + rect.height) || this.pythagore(rect.x, rect.y + rect.height));
 	}
 	draw(screen, x = this.x, y = this.y){
 		screen.ctx.beginPath();

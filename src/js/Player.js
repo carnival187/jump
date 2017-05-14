@@ -1,4 +1,3 @@
-import Direction from './Direction.js';
 import Rectangle from './Rectangle.js';
 import Circle from './Circle.js';
 
@@ -8,10 +7,12 @@ export default class Player
 	{
 		this.body = new Rectangle(options);
 		this.keys = new Map();
-		this.keys.set(37, new Direction("left"));
-		this.keys.set(38, new Direction("jump"));
-		this.keys.set(39, new Direction("right"));
-		this.keys.set(32, new Direction("jump"));
+		this.keys.set(37, "left");
+		this.keys.set(74, "left");
+		this.keys.set(39, "right");
+		this.keys.set(78, "right");
+		this.keys.set(38, "jump");
+		this.keys.set(32, "jump");
 		this.is = {};
 		this.up = 15;
 		this.acceleration = 4;
@@ -24,15 +25,14 @@ export default class Player
 		document.addEventListener('keydown', (e) => {
 			if(this.keys.get(e.keyCode)){
 				e.preventDefault();
-				const a = this.keys.get(e.keyCode);
-				this[a.name]();
+				this[this.keys.get(e.keyCode)]();
 			}
 		});
 		document.addEventListener('keyup', (e) => {
-			if(this.keys.get(e.keyCode)){
+			if(this.keys.get(e.keyCode * 2)){
 				e.preventDefault();
-				const a = this.keys.get(e.keyCode);
-				this.is[a.name + 'ing'] = false;
+				const a = this.keys.get(e.keyCode * 2);
+				this.is[a + 'ing'] = false;
 			}
 		});
 	}
@@ -41,22 +41,25 @@ export default class Player
 		const X = (this.body.x < screen.width / 2) ? this.body.x : screen.width / 2;
 		this.body.draw(screen, X);
 	}
-	gravity(){
+	gravity()
+	{
 		if(!(this.is.lefting || this.is.righting))
 		{
 			this.direction.x -= Math.sign(this.direction.x) * this.weight;
 		}
-		if(this.is.jumping){
+		if(this.is.jumping)
+		{
 			this.direction.y -= this.weight;
-			if(this.direction.y <= 0)
+			if(this.direction.y < 0)
 			{
 				this.direction.y = 0;
 				this.is.jumping = false;
+				this.is.falling = true;
 			}
 		}
-		else
+		else if(this.is.falling)
 		{
-			this.direction.y = (this.body.y > 0) ? -this.weight : 0;	
+			this.direction.y -= (this.body.y > 0) ? this.weight : 0;	
 		}
 	}
 	update(things)
@@ -68,14 +71,26 @@ export default class Player
 		this.body.y = (this.y < 0) ? 0 : this.body.y;
 		for(let v of things)
 		{
-			while(this.body[v.body.type](v.body))
+			if(this.body[v.body.type](v.body))
 			{
-				this.body.y -= this.direction.y / this.direction.x;
-				this.body.x -= Math.sign(this.direction.x);
+				console.log("collision");
+				do{
+					this.body.y -= this.direction.y / this.direction.x;
+					this.body.x -= Math.sign(this.direction.x);
+				}while(this.body[v.body.type](v.body));
 			}
 		}
+		this.fall();
+		//verifier si il n'y a pas d'objet en dessous et voir l'interaction entre eux
 	}
-	contact(){ }
+	fall()
+	{
+		if(this.body.y <= 0)
+		{
+			this.body.y = 0;
+			this.is.falling = false;
+		}
+	}
 	left(){
 		this.direction.x -= this.direction.x > this.speed * -1 ? this.acceleration : 0;
 		this.is.lefting = true;
@@ -85,7 +100,10 @@ export default class Player
 		this.is.righting = true;
 	}
 	jump(){
-		this.direction.y = this.up;
-		this.is.jumping = true;
+		if(!(this.is.jumping || this.is.falling))
+		{
+			this.direction.y = this.up;
+			this.is.jumping = true;
+		}
 	}
 }
