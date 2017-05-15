@@ -14,10 +14,10 @@ export default class Player
 		this.keys.set(38, "jump");
 		this.keys.set(32, "jump");
 		this.is = {};
-		this.up = 15;
+		this.up = 21;
 		this.acceleration = 4;
 		this.speed = 10;
-		this.weight = 2;
+		this.weight = 4;
 		this.direction = {x:0,y:0};
 	}
 	events()
@@ -59,7 +59,7 @@ export default class Player
 		}
 		else if(this.is.falling)
 		{
-			this.direction.y -= (this.body.y > 0) ? this.weight : 0;	
+			this.direction.y -= this.weight;
 		}
 	}
 	update(things)
@@ -69,27 +69,42 @@ export default class Player
 		this.body.x = (this.body.x < 0) ? 0 : this.body.x;
 		this.body.y += this.direction.y;
 		this.body.y = (this.y < 0) ? 0 : this.body.y;
+		const arr = [];
 		for(let v of things)
 		{
 			if(this.body[v.body.type](v.body))
 			{
-				console.log("collision");
+				arr.push(v);
 				do{
-					this.body.y -= this.direction.y / this.direction.x;
+					this.body.y -= Math.sign(this.direction.y);
 					this.body.x -= Math.sign(this.direction.x);
 				}while(this.body[v.body.type](v.body));
 			}
 		}
-		this.fall();
-		//verifier si il n'y a pas d'objet en dessous et voir l'interaction entre eux
+		this.is.falling = this.fall(arr);
 	}
-	fall()
+	fall(things)
 	{
+		this.is.falling = true;
 		if(this.body.y <= 0)
 		{
 			this.body.y = 0;
-			this.is.falling = false;
+			this.direction.y = 0;
+			return false;
 		}
+		if(things.length > 0)
+		{
+			for(let v of things)
+			{
+				if(this.body.y == v.body.y + v.body.height)
+				{
+					console.log("on something");
+					this.direction.y = 0;
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 	left(){
 		this.direction.x -= this.direction.x > this.speed * -1 ? this.acceleration : 0;

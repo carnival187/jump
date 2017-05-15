@@ -22,14 +22,21 @@ export default class Game{
 		}, this);
 	}
 	update(){
+		this.screen.ctx.clearRect(0,0,this.screen.width,this.screen.height);
+
+		this.things.forEach( v => {
+			v.update(this.player);
+			v.body.draw(this.screen, v.body.x - this.screen.x, v.body.y - this.screen.y);
+		}, this);
 		this.player.update(this.things);
 		const X = this.player.body.x - this.screen.width / 2;
 		this.screen.x = X > 0 ? X : 0;
+		this.player.draw(this.screen);
 
 	}
 	playing(self){
 		self.update();
-		self.draw();
+		//self.draw();
 		self.timerOut = window.setTimeout(self.playing, self.screen.frame, self);
 	}
 	start(){

@@ -19,6 +19,9 @@ export default class Rectangle extends Body
 			this.y >= r2.y + r2.height ||
 			this.y + this.height <= r2.y);
 	}
+	correct(r)
+	{
+	}
 	circle(c2)
 	{
 		return c2.rectangle(this);
